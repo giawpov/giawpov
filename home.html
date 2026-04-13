@@ -32,7 +32,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="blog.html">Curhat Dong Mah</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="blog.html">Home</a></li>
                 </ul>
             </div>
         </div>
@@ -48,12 +48,18 @@
                         MAH<span class="text-primary-custom">.</span>
                     </div>
                 </div>
-                <div class="col-lg-5">
-                    <p class="ps-lg-4 mt-4 mt-lg-0 mb-2" style="color: rgba(255,255,255,0.5); font-size: 1rem; border-left: 1px solid rgba(255,255,255,0.2); line-height: 1.8; font-weight: 300;">
-                        "<strong>Rad</strong>upnya <strong>sa</strong>at <strong>ter</strong>puruk <strong>ac</strong>apkali m<strong>sh</strong>ad <strong>d</strong>i <strong>jo</strong>ntunya <strong>fe</strong>el <strong>mi</strong>mpi <strong>bi</strong>ar men<strong>jol</strong>ang 
-                        <strong>ri</strong>ndu <strong>ye</strong>ng <strong>ak</strong>an men<strong>jul</strong>ur <strong>ra</strong>ih b<strong>rav</strong>o <strong>jon</strong>!"
-                    </p>
+               <div class="col-lg-5">
+                <div class="spotify-container mb-4 ps-lg-4">
+                    <iframe style="border-radius:12px" 
+                        src="https://open.spotify.com/embed/playlist/0XfpAkigIqkbr1XS4sN35T?utm_source=generator" 
+                        width="100%" height="152" frameBorder="0" allowfullscreen="" 
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+                    </iframe>
                 </div>
+
+                <p class="quote-text ps-lg-4" style="border-left: 1px solid rgba(255,255,255,0.2);">
+                    "<strong>Rad</strong>upnya <strong>sa</strong>at <strong>ter</strong>puruk <strong>ac</strong>apkali m<strong>sh</strong>ad <strong>d</strong>i <strong>jo</strong>ntunya <strong>fe</strong>el <strong>mi</strong>mpi <strong>bi</strong>ar men<strong>jol</strong>ang <strong>ri</strong>ndu <strong>ye</strong>ng <strong>ak</strong>an men<strong>jul</strong>ur <strong>ra</strong>ih b<strong>rav</strong>o <strong>jon</strong>!"
+                </p>
             </div>
         </header>
 
@@ -66,23 +72,26 @@
 
     <footer class="text-center">
         <div class="container">
-            <p>&copy; 2026 Regie Sitinjak. Dibuat dengan antusiasme teknologi.</p>
+            <p>&copy; 2026 @g3prg..</p>
         </div>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Simulasi data blog (bisa diganti dengan fetch beneran nanti)
-        fetch('https://jsonplaceholder.typicode.com/posts?_limit=5')
-        .then(response => response.json())
+<script>
+    fetch('posts.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('File posts.json tidak ditemukan');
+            }
+            return response.json();
+        })
         .then(data => {
             const container = document.getElementById('blog-container');
-            const tags = ['DESIGN', 'TECH', 'FILM', 'LIFE', 'SYSTEM'];
+            
             container.innerHTML = data.map((post, index) => `
                 <div class="blog-item text-start">
                     <div class="mb-2">
-                        <span class="label-pill">${tags[index % tags.length]}</span>
-                        <span class="small opacity-50 ms-2">April 13, 2026</span>
+                        <span class="label-pill">${post.tag || 'GENERAL'}</span>
+                        <span class="small opacity-50 ms-2">${post.date || 'April 13, 2026'}</span>
                     </div>
                     <h2 class="fw-bold mb-3" style="font-size: 1.8rem;">
                         <a href="post.html?id=${index}" class="text-white text-decoration-none" style="transition:0.3s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">
@@ -90,7 +99,7 @@
                         </a>
                     </h2>
                     <p style="color: rgba(255,255,255,0.7); max-width: 800px;">
-                        ${post.body.substring(0, 120)}... 
+                        ${post.content.substring(0, 150)}... 
                         <a href="post.html?id=${index}" class="small text-white-50 text-decoration-none">/ baca selengkapnya</a>
                     </p>
                 </div>
@@ -98,8 +107,8 @@
         })
         .catch(err => {
             console.error('Error:', err);
-            document.getElementById('blog-container').innerHTML = '<p>Gagal memuat konten.</p>';
+            document.getElementById('blog-container').innerHTML = `
+                <p class="p-5 opacity-50">Gagal memuat konten. Pastikan file <strong>posts.json</strong> berada di folder yang sama dengan file HTML ini.</p>
+            `;
         });
-    </script>
-</body>
-</html>
+</script>
